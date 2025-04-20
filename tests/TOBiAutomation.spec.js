@@ -1,0 +1,38 @@
+const {test, expect} = require("@playwright/test");
+
+test.only('How much is it to roam scenario', async ({ page }) => {
+    await page.goto('https://www.vodafone.co.uk/contact-us/?tag=&tobi-reCaptcha-challenge-enabled=false');
+    await page.getByRole('button', { name: 'Accept all cookies' }).click();
+    await page.getByRole('button', { name: 'more' }).click();
+    await page.getByText('Sound off').click();
+    await expect(page.locator('#message-index-2')).toContainText('Thank you for waiting! Ask me anything.');
+    await page.getByRole('textbox', { name: 'Type here to talk to TOBi' }).click();
+    await page.getByRole('textbox', { name: 'Type here to talk to TOBi' }).fill('how much is it to roam?');
+    await page.getByRole('textbox', { name: 'Type here to talk to TOBi' }).press('Enter');
+    await expect(page.locator('#message-index-4')).toContainText('Let me check your roaming rates for you! Could you please tell me which country you’re travelling to?');
+    await page.getByRole('textbox', { name: 'Type here to talk to TOBi' }).click();
+    await page.getByRole('textbox', { name: 'Type here to talk to TOBi' }).fill('let me think');
+    await page.getByRole('textbox', { name: 'Type here to talk to TOBi' }).press('Enter');
+    await expect(page.locator('#message-index-6')).toContainText('I\'m sorry, I didn\'t pick up a country there. Please try again.');
+    await expect(page.locator('#message-index-7')).toContainText('Let me check your roaming rates for you! Could you please tell me which country you’re travelling to?');
+    await page.getByRole('textbox', { name: 'Type here to talk to TOBi' }).click();
+    await page.getByRole('textbox', { name: 'Type here to talk to TOBi' }).fill('let me think');
+    await page.getByRole('textbox', { name: 'Type here to talk to TOBi' }).press('Enter');
+    await expect(page.locator('#message-index-9')).toContainText('To help you with this, I\'ll need to pass you to an agent. Would you like me to transfer you now?');
+    await expect(page.locator('#message-index-10')).toContainText('Speak to an agent');
+    await expect(page.locator('#message-index-12')).toContainText('Ask something else');
+    await expect(page.locator('#message-index-12')).toContainText('Thanks, that\'s all');
+    await page.getByRole('button', { name: 'Ask something else' }).click();
+    await expect(page.locator('#message-index-12')).toContainText('Okay, what else can I help you with?');
+    await page.getByRole('textbox', { name: 'Type here to talk to TOBi' }).click();
+    await page.getByRole('textbox', { name: 'Type here to talk to TOBi' }).fill('how much is it to roam?');
+    await page.getByRole('textbox', { name: 'Type here to talk to TOBi' }).press('Enter');
+    await expect(page.locator('#message-index-14')).toContainText('Let me check your roaming rates for you! Could you please tell me which country you’re travelling to?');
+    await page.getByRole('textbox', { name: 'Type here to talk to TOBi' }).click();
+    await page.getByRole('textbox', { name: 'Type here to talk to TOBi' }).fill('/chatinfo');
+    await page.getByRole('textbox', { name: 'Type here to talk to TOBi' }).press('Enter');
+    const ChatId = await page.locator("[data-testid=\"KeyValue\"]").nth(6).textContent();
+    console.log(ChatId);
+    await page.getByRole('button', { name: 'Close Tobi chat' }).click();
+    await page.getByRole('button', { name: 'End chat' }).click();
+  });
